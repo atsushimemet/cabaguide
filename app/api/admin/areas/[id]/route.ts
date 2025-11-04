@@ -26,13 +26,13 @@ export async function PUT(
       )
     }
     
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from('areas')
       .update({
         name: String(name),
         prefecture: String(prefecture),
         city: String(city),
-      } as any)
+      })
       .eq('id', id)
       .select()
       .single()
