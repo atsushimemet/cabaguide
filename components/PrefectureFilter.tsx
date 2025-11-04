@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import Link from 'next/link'
 
 interface Area {
   id: string
@@ -98,7 +99,7 @@ export default function PrefectureFilter({ areas }: PrefectureFilterProps) {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
               {group.areas.map((area) => (
-                <a
+                <Link
                   key={area.id}
                   href={`/area/${area.id}`}
                   className="block p-4 sm:p-5 border border-gold/40 rounded-ios-sm bg-cabaret-dark-card hover:border-gold hover:bg-cabaret-dark-section hover:shadow-gold-glow active:scale-[0.98] transition-all duration-ios min-h-[60px] flex items-center"
@@ -106,7 +107,7 @@ export default function PrefectureFilter({ areas }: PrefectureFilterProps) {
                   <h3 className="text-base sm:text-lg font-medium text-cabaret-text-light leading-relaxed">
                     {area.name}
                   </h3>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
