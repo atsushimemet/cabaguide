@@ -26,16 +26,13 @@ export async function PUT(
       )
     }
     
-    const updateData = {
-      name: String(name),
-      prefecture: String(prefecture),
-      city: String(city),
-    }
-    
-    // @ts-ignore - Supabase type inference issue with update method
     const { data, error } = await supabase
       .from('areas')
-      .update(updateData)
+      .update({
+        name: String(name),
+        prefecture: String(prefecture),
+        city: String(city),
+      } as any)
       .eq('id', id)
       .select()
       .single()
