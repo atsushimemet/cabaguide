@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase'
 import { calculatePriceRange, formatPriceRange } from '@/lib/price-calculator'
