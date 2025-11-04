@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient, type Database } from '@/lib/supabase'
-
-type AreaUpdate = Database['public']['Tables']['areas']['Update']
+import { createSupabaseServerClient } from '@/lib/supabase'
 
 export async function PUT(
   request: NextRequest,
@@ -28,15 +26,16 @@ export async function PUT(
       )
     }
     
-    const updateData: AreaUpdate = {
+    const updateData = {
       name: String(name),
       prefecture: String(prefecture),
       city: String(city),
     }
     
+    // @ts-ignore - Supabase type inference issue with update method
     const { data, error } = await supabase
       .from('areas')
-      .update(updateData as any)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single()
