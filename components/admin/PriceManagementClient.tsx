@@ -37,6 +37,9 @@ export default function PriceManagementClient({
   const [nominationPrice, setNominationPrice] = useState(
     initialPrices.nominationPrice?.price || 0
   )
+  const [nominationPriceInput, setNominationPriceInput] = useState(
+    initialPrices.nominationPrice?.price?.toString() || ''
+  )
   const [taxRate, setTaxRate] = useState(
     initialPrices.tax?.price || 0.35
   )
@@ -135,6 +138,8 @@ export default function PriceManagementClient({
 
   const handleSaveNominationPrice = async () => {
     try {
+      const price = parseInt(nominationPriceInput) || 0
+      
       const response = await fetch(
         `/api/admin/shops/${shopId}/prices/nomination`,
         {
@@ -142,7 +147,7 @@ export default function PriceManagementClient({
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ price: nominationPrice }),
+          body: JSON.stringify({ price }),
         }
       )
 
@@ -151,6 +156,7 @@ export default function PriceManagementClient({
         throw new Error(data.error || '保存に失敗しました')
       }
 
+      setNominationPrice(price)
       router.refresh()
       alert('保存しました')
     } catch (err) {
@@ -254,10 +260,11 @@ export default function PriceManagementClient({
             <div className="flex items-center gap-4">
               <input
                 type="number"
-                value={nominationPrice}
-                onChange={(e) => setNominationPrice(parseInt(e.target.value) || 0)}
+                value={nominationPriceInput}
+                onChange={(e) => setNominationPriceInput(e.target.value)}
                 className="border border-gray-300 rounded-md shadow-sm py-2 px-3 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 min="0"
+                placeholder="0"
               />
               <span className="text-gray-700">円</span>
               <button
