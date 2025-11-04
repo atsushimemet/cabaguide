@@ -19,6 +19,13 @@ export default async function AdminLayout({
     redirect('/admin-login')
   }
 
+  // 許可されたメールアドレスのみアクセス可能
+  const ALLOWED_EMAIL = 'noap3b69n@gmail.com'
+  if (user.email !== ALLOWED_EMAIL) {
+    await supabase.auth.signOut()
+    redirect('/admin-login?error=unauthorized_email')
+  }
+
   async function handleSignOut() {
     'use server'
     const supabase = await createSupabaseServerClient()

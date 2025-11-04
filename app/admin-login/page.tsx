@@ -26,6 +26,17 @@ function AdminLoginForm() {
     setIsLoading(true)
     setMessage(null)
 
+    // 許可されたメールアドレスのみログイン可能
+    const ALLOWED_EMAIL = 'noap3b69n@gmail.com'
+    if (email !== ALLOWED_EMAIL) {
+      setMessage({
+        type: 'error',
+        text: 'このメールアドレスは管理者としてログインできません。',
+      })
+      setIsLoading(false)
+      return
+    }
+
     try {
       const supabase = createSupabaseClient()
       const { error } = await supabase.auth.signInWithOtp({

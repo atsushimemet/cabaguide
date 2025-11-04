@@ -81,6 +81,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL(`/admin-login?error=user_not_found`, request.url))
     }
 
+    // 許可されたメールアドレスのみログイン可能
+    const ALLOWED_EMAIL = 'noap3b69n@gmail.com'
+    if (user.email !== ALLOWED_EMAIL) {
+      console.error('Unauthorized email:', user.email)
+      await supabase.auth.signOut()
+      return NextResponse.redirect(new URL('/admin-login?error=unauthorized_email', request.url))
+    }
+
     // Successfully authenticated, redirect to admin
     // Use the response object that already has cookies set by exchangeCodeForSession
     const redirectUrl = new URL(next, request.url)
