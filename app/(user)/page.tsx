@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { createSupabaseServerClient } from '@/lib/supabase'
 import Footer from '@/components/Footer'
 import PrefectureFilter from '@/components/PrefectureFilter'
