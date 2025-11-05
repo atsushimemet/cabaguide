@@ -8,10 +8,15 @@ export async function GET(request: NextRequest) {
   const error = requestUrl.searchParams.get('error')
   const errorDescription = requestUrl.searchParams.get('error_description')
 
-  // If there's an error in the URL, redirect to login
+  // If there's an error in the URL, redirect to login with proper error message
   if (error) {
     console.error('Auth error:', error, errorDescription)
-    return NextResponse.redirect(new URL(`/admin-login?error=${error}`, request.url))
+    const errorMessage = errorDescription 
+      ? encodeURIComponent(errorDescription)
+      : error === 'access_denied' && requestUrl.searchParams.get('error_code') === 'otp_expired'
+      ? encodeURIComponent('認証リンクの有効期限が切れています。再度ログインしてください。')
+      : encodeURIComponent(error)
+    return NextResponse.redirect(new URL(`/admin-login?error=${errorMessage}`, request.url))
   }
 
   if (!code) {
