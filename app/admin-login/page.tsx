@@ -14,10 +14,20 @@ function AdminLoginForm() {
   useEffect(() => {
     const error = searchParams.get('error')
     if (error) {
-      setMessage({
-        type: 'error',
-        text: `認証エラー: ${error}`,
-      })
+      // エラーメッセージをデコード（既に日本語メッセージの場合はそのまま使用）
+      try {
+        const decodedError = decodeURIComponent(error)
+        setMessage({
+          type: 'error',
+          text: decodedError.startsWith('認証エラー:') ? decodedError : `認証エラー: ${decodedError}`,
+        })
+      } catch {
+        // デコードに失敗した場合はそのまま使用
+        setMessage({
+          type: 'error',
+          text: `認証エラー: ${error}`,
+        })
+      }
     }
   }, [searchParams])
 
